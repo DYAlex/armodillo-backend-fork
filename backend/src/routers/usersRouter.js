@@ -8,3 +8,7 @@ usersRouter.get('/', usersController.getAllUsers);
 usersRouter.get('/:userID', usersController.getUserByID);
 
 usersRouter.post('/', usersController.addNewUser);
+
+usersRouter.post('/signin', usersController.signIn);
+
+usersRouter.delete('/', usersController.signOut);
