@@ -1,1 +1,22 @@
-export const DB = {"users":[{"name":"John Doe","email":"example@gmail.com","password":"654321","id":"69b76ed8-663d-453f-93bf-80a79ea57e97"},{"name":"Jane Doe","email":"example@gmail.com","password":"123456","id":"2258f742-e121-4b1d-9e39-c24930f107a2"},{"name":"Jane Doe","email":"example1@gmail.com","password":"123456","id":"f3204466-c545-43e9-9ff9-dc13ebae691e"}]}
+export const DB = {
+  users: [
+    {
+      name: 'John Doe',
+      email: 'example@gmail.com',
+      password: '654321',
+      id: '69b76ed8-663d-453f-93bf-80a79ea57e97',
+    },
+    {
+      name: 'Jane Doe',
+      email: 'example2@gmail.com',
+      password: '123456',
+      id: '75189db1-1ce5-42f0-a367-f269f1213371',
+    },
+    {
+      name: 'Jane Doe',
+      email: 'example1@gmail.com',
+      password: '123456',
+      id: 'd3ff9e94-1f27-40f1-9351-457ac54d44cf',
+    },
+  ],
+};
