@@ -3,6 +3,22 @@ import { surveysValidationSchema } from '../validators/surveysValidator.js';
 import { DB } from '../DB/db.js';
 import { getUserIdFromToken, updateDB } from '../helper.js';
 
+function getSurveyById(req, res) {
+  try {
+    const surveyId = req.params.surveyId;
+    const currentSurvey = DB.surveys.find(
+      (survey) => survey.surveyId === surveyId
+    );
+    if (currentSurvey) {
+      return res.json(currentSurvey);
+    } else {
+      return res.sendStatus(404);
+    }
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+}
+
 async function addNewSurvey(req, res) {
   try {
     const { body } = req;
@@ -45,4 +61,5 @@ async function addNewSurvey(req, res) {
 
 export const surveysController = {
   addNewSurvey,
+  getSurveyById,
 };

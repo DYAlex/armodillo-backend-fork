@@ -5,3 +5,4 @@ import { surveysController } from '../controllers/surveysController.js';
 export const surveysRouter = Router();
 
 surveysRouter.post('/', checkAuth, surveysController.addNewSurvey);
+surveysRouter.get('/:surveyId', checkAuth, surveysController.getSurveyById);

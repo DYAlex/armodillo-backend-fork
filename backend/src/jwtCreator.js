@@ -19,7 +19,6 @@ function createRefreshToken(payload) {
 
 const checkToken = (token) => {
   try {
-    console.log(jwt.verify(token, process.env.JWT_SECRET));
     return jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     throw new Error(error.message);
