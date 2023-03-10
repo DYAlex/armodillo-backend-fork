@@ -1,1 +1,20 @@
-export const DB = {"users":[{"name":"John Doe","email":"example@gmail.com","password":"654321","id":"69b76ed8-663d-453f-93bf-80a79ea57e97"},{"name":"Jane Doe","email":"example@gmail.com","password":"123456","id":"2258f742-e121-4b1d-9e39-c24930f107a2"},{"name":"Jane Doe","email":"example1@gmail.com","password":"123456","id":"f3204466-c545-43e9-9ff9-dc13ebae691e"}]}
+export const DB = {
+  users: [
+    {
+      name: 'Jane Doe',
+      email: 'example0@gmail.com',
+      id: 'fcc953b4-f6f8-4706-90b8-b509656ce386',
+      password: '$2b$10$JK7q3EqKdzr293tj6QXS0.WPFoaTMUiqOzAlXWmM7AdcTi.kLe1iW',
+    },
+    {
+      name: 'Jane Doe',
+      email: 'example1@gmail.com',
+      id: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
+      password: '$2b$10$qx03cntsVTmYcGxiPB4Nx.ppCrG5RCouH564FujzxgtdBQJBuGy1W',
+      accessToken:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NDM3NzQ2LCJleHAiOjE2Nzg0Mzc4MDZ9.5obQph6e21KaMeEAsKNoYf3rwJvBljdZ6VAOzJm6Mmg',
+      refreshToken:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NDM3NzQ2LCJleHAiOjE2Nzg0NDEzNDZ9.Cwj7tQ_ftwNqSsIRZx8BUoRiHxqVtSYZd7q2trI9f80',
+    },
+  ],
+};
