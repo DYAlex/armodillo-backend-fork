@@ -1,14 +1,20 @@
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
 import { usersValidationSchema } from '../validators/usersValidator.js';
 import { DB } from '../DB/db.js';
-import * as fs from 'fs';
-import { sessions } from '../sessions.js';
+import { updateDB } from '../helper.js';
 
-const saltRounds = 10;
+dotenv.config();
+
 function getAllUsers(req, res) {
   try {
-    return res.json(DB.users);
+    return res.json(
+      DB.users.map((user) => {
+        const { password, ...noPasswordUser } = user;
+        return noPasswordUser;
+      })
+    );
   } catch (error) {
     return res.sendStatus(500);
   }
@@ -19,7 +25,8 @@ function getUserByID(req, res) {
     const userID = req.params.userID;
     const currentUser = DB.users.find((user) => user.id === userID);
     if (currentUser) {
-      return res.json(currentUser);
+      const { password, ...noPasswordUser } = currentUser;
+      return res.json(noPasswordUser);
     } else {
       return res.sendStatus(404);
     }
@@ -54,72 +61,28 @@ async function addNewUser(req, res) {
       }, {});
       return res.status(400).json(errorObject);
     }
-    const hashPassword = await bcrypt.hash(body.password, saltRounds);
+    const hashPassword = await bcrypt.hash(
+      body.password,
+      +process.env.BCRYPT_SALT_ROUND
+    );
     const newUser = {
       name: userData.name,
       email: userData.email,
       id: crypto.randomUUID(),
+      password: hashPassword,
     };
     DB.users.push(newUser);
-    DB.passwords.push({
-      email: userData.email,
-      password: hashPassword,
-    });
+    const { password, ...noPasswordUser } = newUser;
     const newContent = `export const DB = ${JSON.stringify(DB)}`;
-    fs.writeFile('./src/DB/db.js', newContent, (errorWrite) => {
-      if (errorWrite) {
-        console.log(errorWrite);
-        return;
-      }
-    });
-    return res.status(201).json(newUser);
+    updateDB(newContent);
+    return res.status(201).json(noPasswordUser);
   } catch (error) {
     return res.sendStatus(500);
   }
-}
-
-async function signIn(req, res) {
-  const { email, password } = req.body;
-  const currentUser = DB.passwords.find((user) => user.email === email);
-  if (currentUser) {
-    if (await bcrypt.compare(password, currentUser.password)) {
-      const sid = crypto.randomUUID();
-      sessions[sid] = email;
-      res.cookie('sid', sid, {
-        httpOnly: true,
-        maxAge: 36e5,
-      });
-      const newContent = `export const sessions = ${JSON.stringify(sessions)}`;
-      fs.writeFile('./src/sessions.js', newContent, (errorWrite) => {
-        if (errorWrite) {
-          console.log(errorWrite);
-          return;
-        }
-      });
-      return res.sendStatus(200);
-    }
-  }
-  return res.status(401).json('Неверный email или пароль');
-}
-
-function signOut(req, res) {
-  const sidFromUserCookie = req.cookies.sid;
-  delete sessions[sidFromUserCookie];
-  const newContent = `export const sessions = ${JSON.stringify(sessions)}`;
-  fs.writeFile('./src/sessions.js', newContent, (errorWrite) => {
-    if (errorWrite) {
-      console.log(errorWrite);
-      return;
-    }
-  });
-  res.clearCookie('sid');
-  res.sendStatus(200);
 }
 
 export const usersController = {
   getAllUsers,
   getUserByID,
   addNewUser,
-  signIn,
-  signOut,
 };
