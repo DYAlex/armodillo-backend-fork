@@ -4,6 +4,7 @@ import { checkAuth } from './checkAuth.js';
 import { usersRouter } from './routers/usersRouter.js';
 import cookieParser from 'cookie-parser';
 import { authRouter } from './routers/authRouter.js';
+import { surveysRouter } from './routers/surveysRouter.js';
 
 const PORT = 3005;
 const app = express();
@@ -12,6 +13,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1', authRouter);
+app.use('/api/v1/surveys', surveysRouter);
 //для перехода на защищенную страницу
 app.get('/api/v1/secret', checkAuth, (req, res) => {
   try {
