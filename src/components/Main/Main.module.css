@@ -1,0 +1,18 @@
+.containerHome {
+    display: flex;
+    align-items: center;
+}
+
+.containerLeft, .containerRight {
+    width: 50%;
+}
+
+.containerLeft h1 {
+    font-size: 50px;
+    margin: 0;
+}
+
+.containerRight img {
+    object-fit: contain;
+    width: 100%;
+}
