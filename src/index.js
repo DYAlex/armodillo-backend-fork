@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { Main } from './pages/MainPage/MainPage';
+import { Signup } from './pages/SignupPage/Signup';
+import { Signin } from './pages/SigninPage/Signin';
 
 const Router = createBrowserRouter(
   [
@@ -15,6 +17,14 @@ const Router = createBrowserRouter(
         {
           index: true,
           element: <Main />,
+        },
+        {
+          path: 'signup',
+          element: <Signup />,
+        },
+        {
+          path: 'signin',
+          element: <Signin />,
         },
       ],
     },
