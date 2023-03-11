@@ -6,3 +6,4 @@ export const surveysRouter = Router();
 
 surveysRouter.post('/', checkAuth, surveysController.addNewSurvey);
 surveysRouter.get('/:surveyId', checkAuth, surveysController.getSurveyById);
+surveysRouter.put('/:surveyId', checkAuth, surveysController.takeSurveyById);

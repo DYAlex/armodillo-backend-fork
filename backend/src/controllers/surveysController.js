@@ -5,11 +5,18 @@ import { getUserIdFromToken, updateDB } from '../helper.js';
 
 function getSurveyById(req, res) {
   try {
+    const token = req.headers.authorization.split(' ')[1];
+    const userID = getUserIdFromToken(token);
     const surveyId = req.params.surveyId;
     const currentSurvey = DB.surveys.find(
       (survey) => survey.surveyId === surveyId
     );
     if (currentSurvey) {
+      if (!currentSurvey.visited.includes(userID)) {
+        currentSurvey.visited.push(userID);
+        const newContent = `export const DB = ${JSON.stringify(DB)}`;
+        updateDB(newContent);
+      }
       return res.json(currentSurvey);
     } else {
       return res.sendStatus(404);
@@ -44,6 +51,7 @@ async function addNewSurvey(req, res) {
       surveyType: surveyData.surveyType,
       surveyId: `${surveyData.surveyType}${crypto.randomUUID()}`,
       done: [],
+      visited: [],
       options: surveyData.options.map((option) => ({
         ...option,
         optionId: crypto.randomUUID(),
@@ -59,7 +67,56 @@ async function addNewSurvey(req, res) {
   }
 }
 
+function takeSurveyById(req, res) {
+  try {
+    const { body } = req;
+    const token = req.headers.authorization.split(' ')[1];
+    const userID = getUserIdFromToken(token);
+    const surveyId = req.params.surveyId;
+    try {
+      const currentSurvey = DB.surveys.find(
+        (survey) => survey.surveyId === surveyId
+      );
+      if (currentSurvey.done.includes(userID)) {
+        return res.status(409).json('Вы уже проголосовали в этом опросе');
+      }
+      if (currentSurvey.surveyType === 'UC') {
+        try {
+          const checkedOption = currentSurvey.options.find(
+            (option) => option.optionId === body.checked
+          );
+          checkedOption.checked = userID;
+          currentSurvey.done.push(userID);
+        } catch (error) {
+          return res.status(404).json('Такого варианта ответа не существует');
+        }
+      } else {
+        let optionsArray = [];
+        typeof body.checked === 'string'
+          ? optionsArray.push(body.checked)
+          : (optionsArray = body.checked);
+        currentSurvey.options.map((option) => {
+          if (optionsArray.includes(option.optionId)) {
+            option.checked.push(userID);
+            if (!currentSurvey.done.includes(userID)) {
+              currentSurvey.done.push(userID);
+            }
+          }
+        });
+      }
+      const newContent = `export const DB = ${JSON.stringify(DB)}`;
+      updateDB(newContent);
+      return res.status(201).json(currentSurvey);
+    } catch (error) {
+      return res.status(404).json('Опрос не найден');
+    }
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+}
+
 export const surveysController = {
   addNewSurvey,
   getSurveyById,
+  takeSurveyById,
 };
