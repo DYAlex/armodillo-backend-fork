@@ -4,6 +4,8 @@ import { checkAuth } from './checkAuth.js';
 import { usersRouter } from './routers/usersRouter.js';
 import cookieParser from 'cookie-parser';
 import { authRouter } from './routers/authRouter.js';
+import { surveysRouter } from './routers/surveysRouter.js';
+import { surveysFilterRouter } from './routers/surveysFilterRouter.js';
 import fileUpload from 'express-fileupload'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
@@ -26,6 +28,8 @@ app.use(fileUpload({
 // app.use(express.static('public'));
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1', authRouter);
+app.use('/api/v1/surveys', surveysRouter);
+app.use('/api/v1/surveysfilters', surveysFilterRouter);
 //для перехода на защищенную страницу
 app.get('/api/v1/secret', checkAuth, (req, res) => {
   try {
