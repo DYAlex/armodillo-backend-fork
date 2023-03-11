@@ -6,6 +6,9 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { Main } from './pages/MainPage/MainPage';
 import { Signup } from './pages/SignupPage/Signup';
 import { Signin } from './pages/SigninPage/Signin';
+import { NewSurveyCreating } from './pages/NewSurveyCreatingPage/NewSurveyCreating';
+import { Profile } from './pages/ProfilePage/ProfilePage';
+import { MySurveys } from './pages/MySurveysPage/MySurveysPage';
 
 const Router = createBrowserRouter(
   [
@@ -25,6 +28,18 @@ const Router = createBrowserRouter(
         {
           path: 'signin',
           element: <Signin />,
+        },
+        {
+          path: 'creating',
+          element: <NewSurveyCreating />,
+        },
+        {
+          path: 'profile',
+          element: <Profile />,
+        },
+        {
+          path: 'mysurveys',
+          element: <MySurveys />,
         },
       ],
     },
