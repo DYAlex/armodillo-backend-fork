@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.containerLogo {
+    height: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.header img {
+    height: 40px;
+}
+
+.containerAdmission {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    background-color: white;
+}
