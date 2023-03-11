@@ -7,7 +7,7 @@ export function Main() {
       <section className={styles.containerHome}>
         <div className={styles.containerLeft}>
           <h1>Создайте опрос в один клик</h1>
-          <button type="button">Новый опрос</button>
+          <button type="button" className={styles.button}>Новый опрос</button>
         </div>
         <div className={styles.containerRight}>
           <img src={surveyLayout} alt="пример опроса" />

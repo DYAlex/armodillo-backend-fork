@@ -28,6 +28,27 @@ main {
   display: flex;
 }
 
+button {
+  border: none;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  overflow: hidden;
+  padding: 0px 20px;
+  text-align: center;
+  background-color: rgb(218, 213, 254);
+  color: rgb(74, 67, 121);
+}
+
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

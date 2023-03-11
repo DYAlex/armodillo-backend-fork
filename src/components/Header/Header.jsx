@@ -9,7 +9,7 @@ export function Header() {
         <h2>ARMADILLO</h2>
       </div>
       <div className={styles.containerAdmission}>
-        <button type="button">Войти</button>
+        <button type="button" className={styles.button}>Войти</button>
       </div>
     </header>
   );
