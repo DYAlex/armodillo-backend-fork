@@ -65,7 +65,6 @@ const Router = createBrowserRouter(
       ],
     },
   ],
-  { basename: '/armodillo' },
 );
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
