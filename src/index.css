@@ -24,8 +24,10 @@ header, footer {
 
 main {
   padding-bottom: 100px;
+  padding-top: 50px;
   min-height: calc(100vh - 200px);
   display: flex;
+  box-sizing: border-box;
 }
 
 button {
@@ -47,6 +49,11 @@ button {
   text-align: center;
   background-color: rgb(218, 213, 254);
   color: rgb(74, 67, 121);
+}
+
+a {
+  text-decoration: none;
+  color: #000;
 }
 
 /* code {
