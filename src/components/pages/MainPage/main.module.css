@@ -1,4 +1,26 @@
-.mainPage {
-  background-color: #ddd;
-  min-height: calc(100vh - 150px);
+.containerHome {
+  display: flex;
+  align-items: center;
+}
+
+.containerLeft, .containerRight {
+  width: 50%;
+}
+
+.containerLeft {
+  padding-right: 10%;
+}
+
+.containerLeft h1 {
+  font-size: 50px;
+  margin: 0;
+}
+
+.containerRight img {
+  object-fit: contain;
+  width: 100%;
+}
+
+.button {
+  margin-top: 30px;
 }

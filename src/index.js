@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import ErrorPage from './components/pages/ErrorPage/ErrorPage';
-import { Main } from './components/Main/Main';
+import { Main } from './components/pages/MainPage/MainPage';
 import { Signup } from './components/pages/SignupPage/Signup';
 import { Signin } from './components/pages/SigninPage/Signin';
 import { NewSurveyCreating } from './components/pages/NewSurveyCreatingPage/NewSurveyCreating';
@@ -18,6 +18,7 @@ import {
 import {
   UniqueChoiceSurvey,
 } from './components/pages/UniqueChoiceSurveyPage/UniqueChoiceSurveyPage';
+import { Contacts } from './components/pages/ContactsPage/Contacts';
 
 const Router = createBrowserRouter(
   [
@@ -62,10 +63,13 @@ const Router = createBrowserRouter(
           path: 'uniquechoice/:id ',
           element: <UniqueChoiceSurvey />,
         },
+        {
+          path: 'contacts',
+          element: <Contacts />,
+        },
       ],
     },
   ],
-  { basename: '/armodillo' },
 );
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
