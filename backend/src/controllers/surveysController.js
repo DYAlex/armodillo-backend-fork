@@ -49,6 +49,7 @@ async function addNewSurvey(req, res) {
       title: surveyData.surveyTitle,
       author: userId,
       surveyType: surveyData.surveyType,
+      extraOption: surveyData.allowExtraOption,
       surveyId: `${surveyData.surveyType}${crypto.randomUUID()}`,
       done: [],
       visited: [],

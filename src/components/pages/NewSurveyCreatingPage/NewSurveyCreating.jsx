@@ -3,10 +3,14 @@ import {
   Formik, Field, FieldArray, Form, ErrorMessage,
 } from 'formik';
 import { useRef, useState } from 'react';
-import { validationScheme } from './validator';
+import { useMutation } from '@tanstack/react-query';
+import { validationScheme } from '../../../utils/validators';
 import styles from './newSurveyCreating.module.css';
+import { teamProjectApi } from '../../../api/TeamProjectApi';
 
 export function NewSurveyCreating() {
+  // eslint-disable-next-line max-len
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NzI3NDE1LCJleHAiOjE2Nzg3MzM0MTV9.g5f6CWgzO_iT15xgP1q9uamefLvHMJ70ypHGFmxO4Iw';
   const optionsGroup = {
     optionTitle: '',
     activeLink: '',
@@ -16,6 +20,11 @@ export function NewSurveyCreating() {
   const [imageLinkValues, setImageLinkValues] = useState(['']);
   const filePicker = useRef();
   const formData = new FormData();
+  const {
+    mutateAsync, isError, error, isLoading,
+  } = useMutation({
+    mutationFn: (preparedValues) => teamProjectApi.addNewSurvey(preparedValues, token),
+  });
   const handleChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -67,15 +76,17 @@ export function NewSurveyCreating() {
     setImageContent([...imageArray, '']);
     setImageLinkValues([...linksArray, '']);
   }
-  function valuesPrepareHandler(values) {
+  async function valuesPrepareHandler(values) {
     const preparedValues = {
       ...values,
       options: [...values.options].map((option, index) => ({
         ...option,
-        image: imageContent[index] || '',
+        image: imageLinkValues[index] || '',
       })),
     };
-    console.log(preparedValues);
+    setImageContent(['']);
+    setImageLinkValues(['']);
+    await mutateAsync(preparedValues);
   }
   function deleteWithOptionHandler(index) {
     const imageArray = [...imageContent];
@@ -83,9 +94,21 @@ export function NewSurveyCreating() {
     setImageContent([...imageArray.slice(0, index), ...imageArray.slice(index + 1)]);
     setImageLinkValues([...linksArray.slice(0, index), ...linksArray.slice(index + 1)]);
   }
+  if (isLoading) {
+    return (
+      <div className={styles.message}>
+        Идет загрузка, пожалуйста, подождите
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div className={styles.message}>{error.message}</div>
+    );
+  }
   return (
     <div className={styles.newSurveyCreatingPage}>
-      <h1>Создание нового опроса</h1>
+      <h1 className={styles.pageTitle}>Создание нового опроса</h1>
       <Formik
         initialValues={{
           surveyTitle: '',

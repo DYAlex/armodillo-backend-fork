@@ -12,9 +12,9 @@ export const DB = {
       id: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
       password: '$2b$10$qx03cntsVTmYcGxiPB4Nx.ppCrG5RCouH564FujzxgtdBQJBuGy1W',
       accessToken:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NTM2ODY0LCJleHAiOjE2Nzg1MzY5MjR9.CnbR60g7246jdz9P2FxWEgeTrC1HWFfkJqCrYYAo1HQ',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NzI3NDE1LCJleHAiOjE2Nzg3MzM0MTV9.g5f6CWgzO_iT15xgP1q9uamefLvHMJ70ypHGFmxO4Iw',
       refreshToken:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NTM2ODY0LCJleHAiOjE2Nzg1NDA0NjR9.xI2L4ItzWS7SpKFF-LS3qIR2D6i9QuN-RSbC2zp1thU',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NzI3NDE1LCJleHAiOjE2Nzg3MzEwMTV9.tbkrz0hOPY9ZZ8mGWpbaU7GiC3SluLqVuQf1r96eH0w',
     },
     {
       name: 'Jane Doe',
@@ -26,108 +26,28 @@ export const DB = {
       refreshToken:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUyQGdtYWlsLmNvbSIsImlkIjoiODc2NWE4ZjYtNzEwZS00YWU0LWI1ODMtNmEzN2E4NzE4N2UyIiwiaWF0IjoxNjc4NTM1MDc2LCJleHAiOjE2Nzg1Mzg2NzZ9.CAv1QMpCCMztJLpduTBR3yK1g0W1J4Wf2W3ACT7M5U0',
     },
+    {
+      name: 'Анна',
+      email: 'abachledacurus@gmail.com',
+      id: 'f956c918-6382-4222-b84a-045fdacadc99',
+      password: '$2b$10$BMgwOUwLVo.ihkIuNMM9Q.6r3OoMDuHDVQXxdbhHoKm809nl0iHri',
+    },
   ],
   surveys: [
     {
-      title: 'question111',
-      author: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
-      surveyType: 'UC',
-      surveyId: 'UC40308336-6061-49f3-a2cb-e9afce378dce',
-      done: [],
-      visited: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-      options: [
-        {
-          optionTitle: 'name1',
-          image: 'ggkjgkj',
-          optionId: '82a26c53-f89d-4090-b97e-93c4cc83c9a0',
-          checked: '',
-        },
-        {
-          optionTitle: 'name2',
-          optionId: '52e242b5-16ed-4dbd-bdee-a2568ed75f23',
-          checked: '',
-        },
-      ],
-    },
-    {
-      title: 'question111',
-      author: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
-      surveyType: 'UC',
-      surveyId: 'UC8e18ff5c-e291-4beb-a96f-f996875df633',
-      done: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-      visited: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-      options: [
-        {
-          optionTitle: 'name1',
-          image: 'ggkjgkj',
-          optionId: 'd36b3eb5-76d5-4e30-a9c7-b3fc31038975',
-          checked: '',
-        },
-        {
-          optionTitle: 'name2',
-          optionId: 'fe29d4d4-3aa4-4df7-b4d6-97e4f69917fd',
-          checked: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
-        },
-      ],
-    },
-    {
-      title: 'question111',
+      title: 'hrh',
       author: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
       surveyType: 'MC',
-      surveyId: 'MC7004c54e-9365-48c3-9e06-5fbaf106891c',
-      done: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-      visited: [],
-      options: [
-        {
-          optionTitle: 'name1',
-          image: 'ggkjgkj',
-          optionId: '90fee41f-5b42-432a-b075-2012753e9a76',
-          checked: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-        },
-        {
-          optionTitle: 'name2',
-          optionId: '5a32025e-829c-4109-b8bf-be29eb35aee6',
-          checked: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-        },
-      ],
-    },
-    {
-      title: 'question111',
-      author: '09bf6c36-9c93-4ba9-b5ae-aa353e082825',
-      surveyType: 'SC',
-      surveyId: 'SC20b6039e-eff6-4f37-8d98-2cb93c058290',
-      done: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-      visited: [],
-      options: [
-        {
-          optionTitle: 'name1',
-          image: 'ggkjgkj',
-          optionId: '44a189da-02cb-4be4-bbe0-7b4e72ffebe1',
-          checked: [],
-        },
-        {
-          optionTitle: 'name2',
-          optionId: 'a1d14061-eb3c-4e78-a166-7a0b547f2518',
-          checked: ['09bf6c36-9c93-4ba9-b5ae-aa353e082825'],
-        },
-      ],
-    },
-    {
-      title: 'question222',
-      author: '8765a8f6-710e-4ae4-b583-6a37a87187e2',
-      surveyType: 'SC',
-      surveyId: 'SC52040d44-b473-491c-895c-3e16fa35970f',
+      extraOption: false,
+      surveyId: 'MC952df335-aa8f-4f0c-bebc-0c951a28c9a3',
       done: [],
       visited: [],
       options: [
         {
-          optionTitle: 'name1',
-          optionId: '85946ea0-972e-413c-a60c-d93488ebeab7',
-          checked: [],
-        },
-        {
-          optionTitle: 'name2',
-          optionId: '7331b6c1-ff95-4ac4-b40e-a6348daf694b',
+          optionTitle: 'hh',
+          activeLink: '',
+          image: '841fa7b56c178a3fc7f6b5788f4697eb.jpg',
+          optionId: '3ef08958-fe16-480b-b09a-7d02e648c609',
           checked: [],
         },
       ],
