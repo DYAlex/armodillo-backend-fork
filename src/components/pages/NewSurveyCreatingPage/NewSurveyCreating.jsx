@@ -2,7 +2,7 @@
 import {
   Formik, Field, FieldArray, Form, ErrorMessage,
 } from 'formik';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { validationScheme } from './validator';
 import styles from './newSurveyCreating.module.css';
 
@@ -14,32 +14,55 @@ export function NewSurveyCreating() {
     image: '',
   };
   const [selectedFile, setSelectedFile] = useState('');
-  const formData = new FormData();
   const [imageContent, setImageContent] = useState([]);
+  const filePicker = useRef();
+  // eslint-disable-next-line no-unused-vars
+  const [imageValue, setImageValue] = useState('');
+  const formData = new FormData();
   const handleChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
   formData.append('image', selectedFile);
   formData.getAll('files');
-  const getUploadedUrl = async (res) => {
+  const getUploadedUrl = async (res, index) => {
     const imageLink = `http://localhost:3005/upload/${res}`;
     const resImg = await fetch(imageLink);
     const blob = await resImg.blob();
     const url = window.URL.createObjectURL(blob);
-    setImageContent((prev) => [...prev, url]);
+    const imageArray = [...imageContent];
+    imageArray[index] = url;
+    setImageContent([...imageArray]);
+    setImageValue(res);
   };
-  const uploadHandler = async () => {
+  const uploadHandler = async (index) => {
     const res = await fetch('http://localhost:3005/upload', {
       method: 'POST',
       body: formData,
-    })
-      .then((result) => result.json());
+    }).then((result) => result.json());
     setSelectedFile('');
     if (res !== 'Не выбран файл для загрузки') {
-      getUploadedUrl(res);
+      getUploadedUrl(res, index);
     }
   };
-  console.log(imageContent);
+  const handlePick = (event) => {
+    if (
+      !event.target.closest('button')
+      && !event.target.closest('i')
+    ) {
+      filePicker.current.click();
+    }
+  };
+  function deleteImageHandler(index) {
+    const imageArray = [...imageContent];
+    imageArray[index] = '';
+    setImageContent([...imageArray]);
+  }
+  // eslint-disable-next-line no-unused-vars
+  function changeImageLinkHandler(event, index) {
+    const imageArray = [...imageContent];
+    imageArray[index] = event.target.value;
+    setImageContent([...imageArray]);
+  }
   return (
     <div className={styles.newSurveyCreatingPage}>
       <h1>Создание нового опроса</h1>
@@ -164,6 +187,7 @@ export function NewSurveyCreating() {
                           type="text"
                           name={`options.${index}.linkurl`}
                           placeholder="ссылка на изображение"
+                          // onChange={(event) => changeImageLinkHandler(event, index)}
                         />
                         <ErrorMessage
                           className={styles.errorMessage}
@@ -171,20 +195,33 @@ export function NewSurveyCreating() {
                           component="div"
                         />
                         <input
+                          className={styles.hidden}
                           encType="multipart/form-data"
                           type="file"
+                          ref={filePicker}
                           name={`options.${index}.image`}
-                          placeholder="загрузить изображение"
                           onChange={handleChange}
                         />
-                        <button
-                          type="button"
-                          onClick={uploadHandler}
-                        >
-                          Загрузить файл
-                        </button>
+                        {selectedFile !== '' && (
+                          <button
+                            type="button"
+                            onClick={() => uploadHandler(index)}
+                          >
+                            Загрузить файл
+                          </button>
+                        )}
                       </div>
-                      <div className={styles.image}>
+                      <div className={styles.image} onClick={handlePick} title="загрузить файл">
+                        {(imageContent[index]) && (
+                          <button
+                            type="button"
+                            title="удалить файл"
+                            className={styles.buttonImageDelete}
+                            onClick={() => deleteImageHandler(index)}
+                          >
+                            <i className="fa-solid fa-xmark" />
+                          </button>
+                        )}
                         <img
                           src={imageContent[index]}
                           alt="изображение"
@@ -205,10 +242,7 @@ export function NewSurveyCreating() {
                   <button
                     type="button"
                     className={styles.buttonAddOption}
-                    onClick={() => {
-                      push(optionsGroup);
-                      setImageContent((prev) => [...prev, '']);
-                    }}
+                    onClick={() => push(optionsGroup)}
                   >
                     Добавить вариант ответа
                   </button>
