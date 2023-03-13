@@ -10,14 +10,14 @@ import { teamProjectApi } from '../../../api/TeamProjectApi';
 
 export function NewSurveyCreating() {
   // eslint-disable-next-line max-len
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4NzI3NDE1LCJleHAiOjE2Nzg3MzM0MTV9.g5f6CWgzO_iT15xgP1q9uamefLvHMJ70ypHGFmxO4Iw';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4Nzc5Mzc3LCJleHAiOjE2Nzg3Nzk0Mzd9.RAX6Qf54zYvYAv1pz83QKu0ZvmoCpab8-izxbzhd_x0';
   const optionsGroup = {
     optionTitle: '',
     activeLink: '',
   };
   const [selectedFile, setSelectedFile] = useState('');
-  const [imageContent, setImageContent] = useState(['']);
-  const [imageLinkValues, setImageLinkValues] = useState(['']);
+  const [imageContent, setImageContent] = useState([]);
+  const [imageLinkValues, setImageLinkValues] = useState([]);
   const filePicker = useRef();
   const formData = new FormData();
   const {
@@ -25,33 +25,44 @@ export function NewSurveyCreating() {
   } = useMutation({
     mutationFn: (preparedValues) => teamProjectApi.addNewSurvey(preparedValues, token),
   });
+  const {
+    mutateAsync: mutateAsyncUpload, isErrorUpload, errorUpload, isLoadingUpload,
+  } = useMutation({
+    mutationFn: (data) => teamProjectApi.uploadFile(data, token),
+  });
   const handleChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  formData.append('image', selectedFile);
-  formData.getAll('files');
+  const {
+    mutateAsync: mutateAsyncImage,
+    isLoadingImage,
+    isErrorImage,
+    errorImage,
+    isFetchingImage,
+  } = useMutation({
+    mutationFn: (data) => teamProjectApi.getUploadedFile(data, token),
+  });
   const getUploadedUrl = async (res, index) => {
-    const imageLink = `http://localhost:3005/upload/${res}`;
-    const resImg = await fetch(imageLink);
+    const resImg = await mutateAsyncImage(res);
     const blob = await resImg.blob();
     const url = window.URL.createObjectURL(blob);
     const imageArray = [...imageContent];
     const linksArray = [...imageLinkValues];
     imageArray[index] = url;
     linksArray[index] = res;
-    setImageContent([...imageArray, '']);
-    setImageLinkValues([...linksArray, '']);
+    setImageContent([...imageArray]);
+    setImageLinkValues([...linksArray]);
   };
-  const uploadHandler = async (index) => {
-    const res = await fetch('http://localhost:3005/upload', {
-      method: 'POST',
-      body: formData,
-    }).then((result) => result.json());
+  async function uploadHandler(index) {
+    formData.append('image', selectedFile);
+    formData.getAll('files');
+    const res = await mutateAsyncUpload(formData);
     setSelectedFile('');
-    if (res !== 'Не выбран файл для загрузки') {
+    console.log(res);
+    if (res !== 'Не выбран файл для загрузки, либо его тип не соответствует типу изображения') {
       getUploadedUrl(res, index);
     }
-  };
+  }
   const handlePick = (event) => {
     if (
       !event.target.closest('button')
@@ -73,8 +84,8 @@ export function NewSurveyCreating() {
     const linksArray = [...imageLinkValues];
     imageArray[index] = event.target.value;
     linksArray[index] = event.target.value;
-    setImageContent([...imageArray, '']);
-    setImageLinkValues([...linksArray, '']);
+    setImageContent([...imageArray]);
+    setImageLinkValues([...linksArray]);
   }
   async function valuesPrepareHandler(values) {
     const preparedValues = {
@@ -94,6 +105,8 @@ export function NewSurveyCreating() {
     setImageContent([...imageArray.slice(0, index), ...imageArray.slice(index + 1)]);
     setImageLinkValues([...linksArray.slice(0, index), ...linksArray.slice(index + 1)]);
   }
+  console.log(isErrorUpload, isLoadingUpload, errorUpload);
+  console.log(isErrorImage, isLoadingImage, errorImage, isFetchingImage);
   if (isLoading) {
     return (
       <div className={styles.message}>
@@ -230,7 +243,7 @@ export function NewSurveyCreating() {
                           type="text"
                           placeholder="ссылка на изображение"
                           onChange={(event) => changeImageLinkHandler(event, index)}
-                          value={imageLinkValues[index]}
+                          value={imageLinkValues[index] || ''}
                         />
                         <ErrorMessage
                           className={styles.errorMessage}
@@ -265,7 +278,7 @@ export function NewSurveyCreating() {
                           </button>
                         )}
                         <img
-                          src={imageContent[index]}
+                          src={imageContent[index] || ''}
                           alt="изображение"
                         />
                       </div>
