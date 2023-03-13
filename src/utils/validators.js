@@ -18,3 +18,13 @@ export const signUpFormValidationSchema = Yup.object().shape({
     )
     .required('Пароль является обязательным полем'),
 });
+
+export const signInFormValidationSchema = Yup.object({
+  email: Yup.string()
+    .email('Некорректный адрес электронной почты')
+    .required('Не указан адрес электронной почты'),
+  password: Yup.string()
+    .min(6, 'Должно быть не менее 6 символов')
+    .max(20, 'Должно быть не более 20-ти символов')
+    .required('Не заполнено обязательное поле "Пароль"'),
+});
