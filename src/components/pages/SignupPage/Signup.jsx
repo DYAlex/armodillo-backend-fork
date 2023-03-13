@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ErrorMessage, Field, Form, Formik,
 } from 'formik';
@@ -14,7 +14,6 @@ const initialValues = {
 };
 
 export function Signup() {
-  console.log('Render Signup component');
   const navigate = useNavigate();
   const {
     mutateAsync,
@@ -25,7 +24,21 @@ export function Signup() {
     mutationFn: (values) => teamProjectApi.addNewUser(values).then(),
   });
 
-  if (isError) console.log('Произошла ошибка при создании пользователя', error);
+  if (isError) {
+    // console.log('Произошла ошибка при создании пользователя', error);
+    return (
+      <div className={styles.signupPage}>
+        <h1>
+          Произошла ошибка при создании пользователя
+        </h1>
+        <p>
+          {error.message}
+        </p>
+        <Link to="/signin" className={styles.link}>Перейти на страницу входа</Link>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className={styles.signupPage}>
@@ -35,7 +48,6 @@ export function Signup() {
   }
 
   const submitHandler = async (values) => {
-    console.log({ values });
     await mutateAsync(values);
     navigate('/signin');
   };
@@ -96,7 +108,7 @@ export function Signup() {
           </div>
           <button
             type="submit"
-            // disabled={isLoading}
+            disabled={isLoading}
           >
             Зарегистрироваться
           </button>
