@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from '../../atoms/ArrowLeft/ArrowLeft';
-import styles from './contacts.module.css';
+import { MainWrap } from '../../templates/MainWrap/MainWrap';
+// import styles from './contacts.module.css';
 
 export function Contacts() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export function Contacts() {
   };
 
   return (
-    <main className={styles.whiteBackground}>
+    <MainWrap>
       <article>
         <ArrowLeft clickBackHandler={clickBackHandler} />
         <h3>Наши контакты</h3>
@@ -32,6 +33,6 @@ export function Contacts() {
           </Link>
         </section>
       </article>
-    </main>
+    </MainWrap>
   );
 }

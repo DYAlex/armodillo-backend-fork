@@ -1,6 +1,6 @@
 import { ButtonPurple } from '../../atoms/ButtonPurple/ButtonPurple';
 import styles from './main.module.css';
-import surveyLayout from './survey1.png';
+import surveyLayout from './survey_main.gif';
 
 export function Main() {
   return (
