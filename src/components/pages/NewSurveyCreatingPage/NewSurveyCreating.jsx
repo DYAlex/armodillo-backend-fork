@@ -2,6 +2,7 @@
 import {
   Formik, Field, FieldArray, Form, ErrorMessage,
 } from 'formik';
+import { useState } from 'react';
 import { validationScheme } from './validator';
 import styles from './newSurveyCreating.module.css';
 
@@ -12,7 +13,33 @@ export function NewSurveyCreating() {
     linkurl: '',
     image: '',
   };
-
+  const [selectedFile, setSelectedFile] = useState('');
+  const formData = new FormData();
+  const [imageContent, setImageContent] = useState([]);
+  const handleChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  formData.append('image', selectedFile);
+  formData.getAll('files');
+  const getUploadedUrl = async (res) => {
+    const imageLink = `http://localhost:3005/upload/${res}`;
+    const resImg = await fetch(imageLink);
+    const blob = await resImg.blob();
+    const url = window.URL.createObjectURL(blob);
+    setImageContent((prev) => [...prev, url]);
+  };
+  const uploadHandler = async () => {
+    const res = await fetch('http://localhost:3005/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((result) => result.json());
+    setSelectedFile('');
+    if (res !== 'Не выбран файл для загрузки') {
+      getUploadedUrl(res);
+    }
+  };
+  console.log(imageContent);
   return (
     <div className={styles.newSurveyCreatingPage}>
       <h1>Создание нового опроса</h1>
@@ -143,13 +170,26 @@ export function NewSurveyCreating() {
                           name={`options.${index}.linkurl`}
                           component="div"
                         />
-                        <Field
+                        <input
+                          encType="multipart/form-data"
                           type="file"
                           name={`options.${index}.image`}
                           placeholder="загрузить изображение"
+                          onChange={handleChange}
+                        />
+                        <button
+                          type="button"
+                          onClick={uploadHandler}
+                        >
+                          Загрузить файл
+                        </button>
+                      </div>
+                      <div className={styles.image}>
+                        <img
+                          src={imageContent[index]}
+                          alt="изображение"
                         />
                       </div>
-                      <div className={styles.image}>image</div>
                       {index > 0 && (
                         <button
                           type="button"
@@ -165,7 +205,10 @@ export function NewSurveyCreating() {
                   <button
                     type="button"
                     className={styles.buttonAddOption}
-                    onClick={() => push(optionsGroup)}
+                    onClick={() => {
+                      push(optionsGroup);
+                      setImageContent((prev) => [...prev, '']);
+                    }}
                   >
                     Добавить вариант ответа
                   </button>
