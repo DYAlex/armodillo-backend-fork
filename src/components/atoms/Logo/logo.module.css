@@ -1,0 +1,11 @@
+.containerLogo {
+    height: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.containerLogo img {
+    height: 40px;
+}

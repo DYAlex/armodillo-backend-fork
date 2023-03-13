@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from '../../atoms/ArrowLeft/ArrowLeft';
 import styles from './contacts.module.css';
 
 export function Contacts() {
@@ -11,9 +12,7 @@ export function Contacts() {
   return (
     <main className={styles.whiteBackground}>
       <article>
-        <div onClick={clickBackHandler}>
-          <i className="fa-solid fa-arrow-left" />
-        </div>
+        <ArrowLeft clickBackHandler={clickBackHandler} />
         <h3>Наши контакты</h3>
         <section>
           <Link to="https://github.com/lev33" target="_blank">

@@ -1,3 +1,4 @@
+import { ButtonPurple } from '../../atoms/ButtonPurple/ButtonPurple';
 import styles from './main.module.css';
 import surveyLayout from './survey1.png';
 
@@ -7,7 +8,9 @@ export function Main() {
       <section className={styles.containerHome}>
         <div className={styles.containerLeft}>
           <h1>Создайте опрос в один клик</h1>
-          <button type="button" className={styles.button}>Новый опрос</button>
+          <div className={styles.button}>
+            <ButtonPurple type="button">Новый опрос</ButtonPurple>
+          </div>
         </div>
         <div className={styles.containerRight}>
           <img src={surveyLayout} alt="пример опроса" />
