@@ -28,6 +28,7 @@ export const signInFormValidationSchema = Yup.object({
     .max(20, 'Должно быть не более 20-ти символов')
     .required('Не заполнено обязательное поле "Пароль"'),
 });
+
 export const validationScheme = Yup.object({
   surveyTitle: Yup.string()
     .min(2, 'Заголовок должен состоять минимум из двух символов')
