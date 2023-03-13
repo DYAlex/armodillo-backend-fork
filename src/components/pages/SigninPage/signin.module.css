@@ -1,4 +1,17 @@
 .signinPage {
-  background-color: #ddd;
-  min-height: calc(100vh - 150px);
+  background-color: rgba(256, 0, 256, 0.1);
+  min-height: calc(100vh);
+}
+
+.linkError {
+  color: crimson;
+}
+
+.link {
+  color: rgb(255, 175, 56);
+}
+
+.link:hover,
+.linkError:hover {
+  color: rgb(74, 67, 121);
 }

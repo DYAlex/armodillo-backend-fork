@@ -3,6 +3,15 @@
   min-height: calc(100vh - 150px);
 }
 
-.link {
+.linkError {
   color: crimson;
+}
+
+.link {
+  color: rgb(255, 175, 56);
+}
+
+.link:hover,
+.linkError:hover {
+  color: rgb(74, 67, 121);
 }

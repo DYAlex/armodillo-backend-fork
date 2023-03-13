@@ -34,7 +34,7 @@ export function Signup() {
         <p>
           {error.message}
         </p>
-        <Link to="/signin" className={styles.link}>Перейти на страницу входа</Link>
+        <Link to="/signin" className={styles.linkError}>Перейти на страницу входа</Link>
       </div>
     );
   }
@@ -55,6 +55,11 @@ export function Signup() {
   return (
     <>
       <h1>Создание учетной записи</h1>
+      <p>
+        Уже зарегистрированы?
+        {' '}
+        <Link to="/signin" className={styles.link}>Перейти на страницу входа</Link>
+      </p>
       <Formik
         initialValues={initialValues}
         validationSchema={signUpFormValidationSchema}
