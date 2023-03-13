@@ -10,14 +10,11 @@ export function NewSurveyCreating() {
   const optionsGroup = {
     optionTitle: '',
     activeLink: '',
-    linkurl: '',
-    image: '',
   };
   const [selectedFile, setSelectedFile] = useState('');
-  const [imageContent, setImageContent] = useState([]);
+  const [imageContent, setImageContent] = useState(['']);
+  const [imageLinkValues, setImageLinkValues] = useState(['']);
   const filePicker = useRef();
-  // eslint-disable-next-line no-unused-vars
-  const [imageValue, setImageValue] = useState('');
   const formData = new FormData();
   const handleChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -30,9 +27,11 @@ export function NewSurveyCreating() {
     const blob = await resImg.blob();
     const url = window.URL.createObjectURL(blob);
     const imageArray = [...imageContent];
+    const linksArray = [...imageLinkValues];
     imageArray[index] = url;
-    setImageContent([...imageArray]);
-    setImageValue(res);
+    linksArray[index] = res;
+    setImageContent([...imageArray, '']);
+    setImageLinkValues([...linksArray, '']);
   };
   const uploadHandler = async (index) => {
     const res = await fetch('http://localhost:3005/upload', {
@@ -54,14 +53,35 @@ export function NewSurveyCreating() {
   };
   function deleteImageHandler(index) {
     const imageArray = [...imageContent];
+    const linksArray = [...imageLinkValues];
     imageArray[index] = '';
+    linksArray[index] = '';
     setImageContent([...imageArray]);
+    setImageLinkValues([...linksArray]);
   }
-  // eslint-disable-next-line no-unused-vars
   function changeImageLinkHandler(event, index) {
     const imageArray = [...imageContent];
+    const linksArray = [...imageLinkValues];
     imageArray[index] = event.target.value;
-    setImageContent([...imageArray]);
+    linksArray[index] = event.target.value;
+    setImageContent([...imageArray, '']);
+    setImageLinkValues([...linksArray, '']);
+  }
+  function valuesPrepareHandler(values) {
+    const preparedValues = {
+      ...values,
+      options: [...values.options].map((option, index) => ({
+        ...option,
+        image: imageContent[index] || '',
+      })),
+    };
+    console.log(preparedValues);
+  }
+  function deleteWithOptionHandler(index) {
+    const imageArray = [...imageContent];
+    const linksArray = [...imageLinkValues];
+    setImageContent([...imageArray.slice(0, index), ...imageArray.slice(index + 1)]);
+    setImageLinkValues([...linksArray.slice(0, index), ...linksArray.slice(index + 1)]);
   }
   return (
     <div className={styles.newSurveyCreatingPage}>
@@ -75,7 +95,7 @@ export function NewSurveyCreating() {
         }}
         validationSchema={validationScheme}
         onSubmit={async (values) => {
-          console.log(values);
+          valuesPrepareHandler(values);
         }}
       >
         {({ values }) => (
@@ -183,11 +203,11 @@ export function NewSurveyCreating() {
                           name={`options.${index}.activeLink`}
                           component="div"
                         />
-                        <Field
+                        <input
                           type="text"
-                          name={`options.${index}.linkurl`}
                           placeholder="ссылка на изображение"
-                          // onChange={(event) => changeImageLinkHandler(event, index)}
+                          onChange={(event) => changeImageLinkHandler(event, index)}
+                          value={imageLinkValues[index]}
                         />
                         <ErrorMessage
                           className={styles.errorMessage}
@@ -199,7 +219,6 @@ export function NewSurveyCreating() {
                           encType="multipart/form-data"
                           type="file"
                           ref={filePicker}
-                          name={`options.${index}.image`}
                           onChange={handleChange}
                         />
                         {selectedFile !== '' && (
@@ -231,14 +250,16 @@ export function NewSurveyCreating() {
                         <button
                           type="button"
                           className={styles.buttonDelete}
-                          onClick={() => remove(index)}
+                          onClick={() => {
+                            deleteWithOptionHandler(index);
+                            remove(index);
+                          }}
                         >
                           Удалить
                         </button>
                       )}
                     </div>
                   ))}
-                  {' '}
                   <button
                     type="button"
                     className={styles.buttonAddOption}

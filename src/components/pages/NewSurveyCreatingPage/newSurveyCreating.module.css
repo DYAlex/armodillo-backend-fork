@@ -49,6 +49,7 @@
 .image {
   width: 30%;
   height: auto;
+  min-height: 100px;
   max-height: 200px;
   position: relative;
   cursor: pointer;
