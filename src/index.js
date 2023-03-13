@@ -12,16 +12,15 @@ import { Signin } from './components/pages/SigninPage/Signin';
 import { NewSurveyCreating } from './components/pages/NewSurveyCreatingPage/NewSurveyCreating';
 import { Profile } from './components/pages/ProfilePage/ProfilePage';
 import { MySurveys } from './components/pages/MySurveysPage/MySurveysPage';
-import {
-  SingleChoiceSurvey,
-} from './components/pages/SingleChoiceSurveyPage/SingleChoiceSurveyPage';
-import {
-  MultipleChoiceSurvey,
-} from './components/pages/MultipleChoiceSurveyPage/MultipleChoiceSurveyPage';
-import {
-  UniqueChoiceSurvey,
-} from './components/pages/UniqueChoiceSurveyPage/UniqueChoiceSurveyPage';
+// eslint-disable-next-line max-len
+import { SingleChoiceSurvey } from './components/pages/SingleChoiceSurveyPage/SingleChoiceSurveyPage';
+// eslint-disable-next-line max-len
+import { MultipleChoiceSurvey } from './components/pages/MultipleChoiceSurveyPage/MultipleChoiceSurveyPage';
+// eslint-disable-next-line max-len
+import { UniqueChoiceSurvey } from './components/pages/UniqueChoiceSurveyPage/UniqueChoiceSurveyPage';
 import { Contacts } from './components/pages/ContactsPage/Contacts';
+import { Secret } from './components/pages/SecretPage/SecretPage';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -76,6 +75,14 @@ const Router = createBrowserRouter([
       {
         path: 'contacts',
         element: <Contacts />,
+      },
+      {
+        path: 'secret',
+        element: (
+          <PrivateRoute>
+            <Secret />
+          </PrivateRoute>
+        ),
       },
     ],
   },
