@@ -1,4 +1,4 @@
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
 import {
   Formik, Field, Form, ErrorMessage,
@@ -7,9 +7,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { teamProjectApi } from '../../../api/TeamProjectApi';
 import { signInFormValidationSchema } from '../../../utils/validators';
 import styles from './signin.module.css';
+import { setUser } from '../../../redux/slices/userSlice';
 
 export function Signin() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state: locationState } = useLocation();
 
@@ -46,10 +47,10 @@ export function Signin() {
   }
 
   const submitHandler = async (values) => {
-    console.log({ values });
-    const { data } = await mutateAsync(values);
-    console.log({ data });
-    // dispatch(setUser(data));
+    // console.log({ values });
+    const data = await mutateAsync(values);
+    // console.log({ data });
+    dispatch(setUser(data));
 
     if (locationState?.from) {
       return navigate(locationState.from);

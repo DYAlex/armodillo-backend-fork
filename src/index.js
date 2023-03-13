@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 import './index.css';
 import App from './App';
 import ErrorPage from './components/pages/ErrorPage/ErrorPage';
@@ -29,61 +31,61 @@ const queryClient = new QueryClient({
   },
 });
 
-const Router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <App />,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-          index: true,
-          element: <Main />,
-        },
-        {
-          path: 'signup',
-          element: <Signup />,
-        },
-        {
-          path: 'signin',
-          element: <Signin />,
-        },
-        {
-          path: 'creating',
-          element: <NewSurveyCreating />,
-        },
-        {
-          path: 'profile',
-          element: <Profile />,
-        },
-        {
-          path: 'mysurveys',
-          element: <MySurveys />,
-        },
-        {
-          path: 'singlechoice/:id ',
-          element: <SingleChoiceSurvey />,
-        },
-        {
-          path: 'multiplechoice/:id ',
-          element: <MultipleChoiceSurvey />,
-        },
-        {
-          path: 'uniquechoice/:id ',
-          element: <UniqueChoiceSurvey />,
-        },
-        {
-          path: 'contacts',
-          element: <Contacts />,
-        },
-      ],
-    },
-  ],
-);
+const Router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Main />,
+      },
+      {
+        path: 'signup',
+        element: <Signup />,
+      },
+      {
+        path: 'signin',
+        element: <Signin />,
+      },
+      {
+        path: 'creating',
+        element: <NewSurveyCreating />,
+      },
+      {
+        path: 'profile',
+        element: <Profile />,
+      },
+      {
+        path: 'mysurveys',
+        element: <MySurveys />,
+      },
+      {
+        path: 'singlechoice/:id ',
+        element: <SingleChoiceSurvey />,
+      },
+      {
+        path: 'multiplechoice/:id ',
+        element: <MultipleChoiceSurvey />,
+      },
+      {
+        path: 'uniquechoice/:id ',
+        element: <UniqueChoiceSurvey />,
+      },
+      {
+        path: 'contacts',
+        element: <Contacts />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <QueryClientProvider client={queryClient}>
-    <RouterProvider router={Router} />
+    <Provider store={store}>
+      <RouterProvider router={Router} />
+    </Provider>
   </QueryClientProvider>,
 );
