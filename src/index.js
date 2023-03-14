@@ -6,7 +6,7 @@ import { store } from './redux/store';
 import './index.css';
 import App from './App';
 import ErrorPage from './components/pages/ErrorPage/ErrorPage';
-import { Main } from './components/pages/MainPage/MainPage';
+import { Main } from './components/pages/MainPage/Main';
 import { Signup } from './components/pages/SignupPage/Signup';
 import { Signin } from './components/pages/SigninPage/Signin';
 import { NewSurveyCreating } from './components/pages/NewSurveyCreatingPage/NewSurveyCreating';

@@ -3,9 +3,6 @@
     align-items: center;
     justify-content: center;
     gap: 100px;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     box-sizing: border-box;
     font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -17,5 +14,5 @@
 }
 
 .footerItem:hover {
-    color: orange
+    text-decoration: underline rgb(211, 137, 0);
 }

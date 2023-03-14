@@ -1,0 +1,9 @@
+.arrowLeft {
+    font-size: 20px;
+    color: rgb(159, 159, 159);
+    cursor: pointer;
+}
+
+.arrowLeft:hover {
+    color: black;
+}
