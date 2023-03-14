@@ -149,7 +149,7 @@ class TeamProjectApi {
 
   async addNewSurvey(values, token) {
     this.checkToken(token);
-
+    
     const res = await fetch(`${this.baseUrl}/surveys`, {
       method: 'POST',
       headers: {
@@ -280,6 +280,59 @@ class TeamProjectApi {
     }
 
     return res.json();
+  }
+
+  async uploadFile(formData, token) {
+    this.checkToken(token);
+    const res = await fetch(`${this.baseUrl}/upload`, {
+      method: 'POST',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+      },
+      body: formData,
+    });
+    if (res.status === 400) {
+      throw new Error(
+        'Не выбран файл для загрузки, либо его тип не соответствует типу изображения',
+      );
+    }
+    if (res.status === 401) {
+      throw new Error('Необходимо авторизоваться');
+    }
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при добавлении опроса. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при добавлении опроса. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async getUploadedFile(filename, token) {
+    this.checkToken(token);
+    const res = await fetch(`${this.baseUrl}/upload/${filename}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+      },
+    });
+    if (res.status === 401) {
+      throw new Error('Необходимо авторизоваться');
+    }
+    if (res.status === 404) {
+      throw new Error('Файл с таким именем не найден');
+    }
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении изображения. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении изображения. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+    return res;
   }
 }
 
