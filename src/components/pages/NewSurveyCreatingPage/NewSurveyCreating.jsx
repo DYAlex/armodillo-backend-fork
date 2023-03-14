@@ -10,10 +10,11 @@ import { teamProjectApi } from '../../../api/TeamProjectApi';
 import { ButtonWhite } from '../../atoms/ButtonWhite/ButtonWhite';
 import { ButtonPurple } from '../../atoms/ButtonPurple/ButtonPurple';
 import { MainWrap } from '../../templates/MainWrap/MainWrap';
+import { Loader } from '../../Loader/Loader';
 
 export function NewSurveyCreating() {
   // eslint-disable-next-line max-len
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4Nzc5Mzc3LCJleHAiOjE2Nzg3Nzk0Mzd9.RAX6Qf54zYvYAv1pz83QKu0ZvmoCpab8-izxbzhd_x0';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGUxQGdtYWlsLmNvbSIsImlkIjoiMDliZjZjMzYtOWM5My00YmE5LWI1YWUtYWEzNTNlMDgyODI1IiwiaWF0IjoxNjc4ODAyNTk0LCJleHAiOjE2Nzg4MDg1OTR9.V8-7N-GZvwuUOwzUu96y5IgBnHWhUdwQP8R5pDtNVHE';
   const optionsGroup = {
     optionTitle: '',
     activeLink: '',
@@ -26,10 +27,16 @@ export function NewSurveyCreating() {
   const {
     mutateAsync, isError, error, isLoading,
   } = useMutation({
-    mutationFn: (preparedValues) => teamProjectApi.addNewSurvey(preparedValues, token),
+    mutationFn: (preparedValues) => teamProjectApi.addNewSurvey(preparedValues, token)
+      .then((result) => {
+        console.log(result.surveyId);
+      }),
   });
   const {
-    mutateAsync: mutateAsyncUpload, isErrorUpload, errorUpload, isLoadingUpload,
+    mutateAsync: mutateAsyncUpload,
+    isError: isErrorUpload,
+    error: errorUpload,
+    isLoading: isLoadingUpload,
   } = useMutation({
     mutationFn: (data) => teamProjectApi.uploadFile(data, token),
   });
@@ -38,10 +45,9 @@ export function NewSurveyCreating() {
   };
   const {
     mutateAsync: mutateAsyncImage,
-    isLoadingImage,
-    isErrorImage,
-    errorImage,
-    isFetchingImage,
+    isLoading: isLoadingImage,
+    isError: isErrorImage,
+    error: errorImage,
   } = useMutation({
     mutationFn: (data) => teamProjectApi.getUploadedFile(data, token),
   });
@@ -61,15 +67,15 @@ export function NewSurveyCreating() {
     formData.getAll('files');
     const res = await mutateAsyncUpload(formData);
     setSelectedFile('');
-    if (res !== 'Не выбран файл для загрузки, либо его тип не соответствует типу изображения') {
+    if (
+      res
+      !== 'Не выбран файл для загрузки, либо его тип не соответствует типу изображения'
+    ) {
       getUploadedUrl(res, index);
     }
   }
   const handlePick = (event) => {
-    if (
-      !event.target.closest('button')
-      && !event.target.closest('i')
-    ) {
+    if (!event.target.closest('button') && !event.target.closest('i')) {
       filePicker.current.click();
     }
   };
@@ -105,21 +111,41 @@ export function NewSurveyCreating() {
   function deleteWithOptionHandler(index) {
     const imageArray = [...imageContent];
     const linksArray = [...imageLinkValues];
-    setImageContent([...imageArray.slice(0, index), ...imageArray.slice(index + 1)]);
-    setImageLinkValues([...linksArray.slice(0, index), ...linksArray.slice(index + 1)]);
+    setImageContent([
+      ...imageArray.slice(0, index),
+      ...imageArray.slice(index + 1),
+    ]);
+    setImageLinkValues([
+      ...linksArray.slice(0, index),
+      ...linksArray.slice(index + 1),
+    ]);
   }
-  console.log(isErrorUpload, isLoadingUpload, errorUpload);
-  console.log(isErrorImage, isLoadingImage, errorImage, isFetchingImage);
   if (isLoading) {
     return (
-      <div className={styles.message}>
-        Идет загрузка, пожалуйста, подождите
-      </div>
+      <MainWrap>
+        <Loader />
+      </MainWrap>
     );
   }
   if (isError) {
     return (
-      <div className={styles.message}>{error.message}</div>
+      <MainWrap>
+        <div className={styles.message}>{error.message}</div>
+      </MainWrap>
+    );
+  }
+  if (isErrorImage) {
+    return (
+      <MainWrap>
+        <div className={styles.message}>{errorImage.message}</div>
+      </MainWrap>
+    );
+  }
+  if (isErrorUpload) {
+    return (
+      <MainWrap>
+        <div className={styles.message}>{errorUpload.message}</div>
+      </MainWrap>
     );
   }
   return (
@@ -262,47 +288,54 @@ export function NewSurveyCreating() {
                             onChange={handleChange}
                           />
                           {selectedFile !== '' && (
-                          <ButtonWhite
-                            type="button"
-                            onClick={() => uploadHandler(index)}
-                          >
-                            Загрузить файл
-                          </ButtonWhite>
+                            <ButtonWhite
+                              type="button"
+                              onClick={() => uploadHandler(index)}
+                            >
+                              Загрузить файл
+                            </ButtonWhite>
                           )}
                         </div>
-                        <div className={styles.image} onClick={handlePick} title="загрузить файл">
-                          {(imageContent[index]) && (
-                          <button
-                            type="button"
-                            title="удалить файл"
-                            className={styles.buttonImageDelete}
-                            onClick={() => deleteImageHandler(index)}
-                          >
-                            <i className="fa-solid fa-xmark" />
-                          </button>
+                        <div
+                          className={styles.image}
+                          onClick={handlePick}
+                          title="загрузить файл"
+                        >
+                          {(isLoadingImage || isLoadingUpload) && <Loader />}
+                          {imageContent[index] && (
+                            <button
+                              type="button"
+                              title="удалить файл"
+                              className={styles.buttonImageDelete}
+                              onClick={() => deleteImageHandler(index)}
+                            >
+                              <i className="fa-solid fa-xmark" />
+                            </button>
                           )}
-                          <img
-                            src={imageContent[index] || ''}
-                            alt="изображение"
-                          />
+                          {!isLoadingImage && !isLoadingUpload && (
+                            <img
+                              src={imageContent[index] || ''}
+                              alt="изображение"
+                            />
+                          )}
                         </div>
                         {index > 0 && (
-                        <ButtonWhite
-                          type="button"
-                          className={styles.buttonDelete}
-                          onClick={() => {
-                            deleteWithOptionHandler(index);
-                            remove(index);
-                          }}
-                        >
-                          Удалить
-                        </ButtonWhite>
+                          <ButtonWhite
+                            type="button"
+                            className={styles.buttonDelete}
+                            onClick={() => {
+                              deleteWithOptionHandler(index);
+                              remove(index);
+                            }}
+                          >
+                            Удалить
+                          </ButtonWhite>
                         )}
                       </div>
                     ))}
                     <ButtonWhite
                       type="button"
-                    // className={styles.buttonAddOption}
+                      // className={styles.buttonAddOption}
                       onClick={() => push(optionsGroup)}
                     >
                       Добавить вариант ответа

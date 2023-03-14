@@ -1,4 +1,17 @@
-.lds-ripple {
+.loader {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 12px;
+}
+
+.loader > img {
+  width: auto;
+  height: 100px;
+}
+
+/* .lds-ripple {
   display: inline-block;
   position: relative;
   width: 80px;
@@ -43,4 +56,4 @@
     height: 72px;
     opacity: 0;
   }
-}
+} */
