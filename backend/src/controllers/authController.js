@@ -45,7 +45,8 @@ function signOut(req, res) {
 
 async function refreshToken(req, res) {
   try {
-    return res.json(await jwtCreator.refresh(req));
+    // в jwtCreator.refresh здесь легче передавать req.body, чтобы корректно получить в нем данные для валидации. Из-за того, что здесь передавался весь запрос, в refresh получался currentUser - undefined
+    return res.json(await jwtCreator.refresh(req.body));
   } catch (error) {
     if (error.message === '401') return res.sendStatus(401);
     return res.sendStatus(500);
