@@ -54,7 +54,7 @@ class TeamProjectApi {
   }
 
   async getUserById(userId) {
-    const res = await fetch(`${this.baseUrl}/products/${userId}`, {
+    const res = await fetch(`${this.baseUrl}/users/${userId}`, {
       headers: {
         'Content-type': 'application/json',
       },

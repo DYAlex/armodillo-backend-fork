@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './contacts.module.css';
+import { ArrowLeft } from '../../atoms/ArrowLeft/ArrowLeft';
+import { MainWrap } from '../../templates/MainWrap/MainWrap';
+// import styles from './contacts.module.css';
 
 export function Contacts() {
   const navigate = useNavigate();
@@ -9,11 +11,9 @@ export function Contacts() {
   };
 
   return (
-    <main className={styles.whiteBackground}>
+    <MainWrap>
       <article>
-        <div onClick={clickBackHandler}>
-          <i className="fa-solid fa-arrow-left" />
-        </div>
+        <ArrowLeft clickBackHandler={clickBackHandler} />
         <h3>Наши контакты</h3>
         <section>
           <Link to="https://github.com/lev33" target="_blank">
@@ -33,6 +33,6 @@ export function Contacts() {
           </Link>
         </section>
       </article>
-    </main>
+    </MainWrap>
   );
 }
