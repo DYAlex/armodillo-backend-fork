@@ -30,7 +30,7 @@ app.use('/api/v1', authRouter);
 app.use('/api/v1/surveys', surveysRouter);
 app.use('/api/v1/surveysfilters', surveysFilterRouter);
 // Это роут для загрузки файлов картинок в папку uploads
-app.use('/upload', uploadImagesRouter);
+app.use('/api/v1/upload', uploadImagesRouter);
 //для перехода на защищенную страницу
 app.get('/api/v1/secret', checkAuth, (req, res) => {
   try {

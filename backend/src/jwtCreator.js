@@ -28,7 +28,8 @@ const checkToken = (token) => {
 async function refresh(req) {
   const currentUser = DB.users.find(
     (user) => user.id === req.userId && user.refreshToken === req.userToken
-  );
+    );
+    console.log(currentUser);
   if (!currentUser) {
     throw new Error('401');
   }

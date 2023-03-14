@@ -50,8 +50,8 @@ export function NewSurveyCreating() {
     const linksArray = [...imageLinkValues];
     imageArray[index] = url;
     linksArray[index] = res;
-    setImageContent([...imageArray, '']);
-    setImageLinkValues([...linksArray, '']);
+    setImageContent([...imageArray]);
+    setImageLinkValues([...linksArray]);
   };
   async function uploadHandler(index) {
     formData.append('image', selectedFile);
