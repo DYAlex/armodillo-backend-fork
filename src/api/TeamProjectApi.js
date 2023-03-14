@@ -98,7 +98,7 @@ class TeamProjectApi {
   async signOut(token) {
     this.checkToken(token);
 
-    const res = await fetch(`${this.baseUrl}/signout}`, {
+    const res = await fetch(`${this.baseUrl}/signout`, {
       method: 'DELETE',
       headers: {
         authorization: this.getAuthorizationHeader(token),
@@ -124,7 +124,7 @@ class TeamProjectApi {
   async refreshToken(values, token) {
     this.checkToken(token);
 
-    const res = await fetch(`${this.baseUrl}/refresh}`, {
+    const res = await fetch(`${this.baseUrl}/refresh`, {
       method: 'PUT',
       headers: {
         authorization: this.getAuthorizationHeader(token),
@@ -144,14 +144,13 @@ class TeamProjectApi {
       throw new Error(`Произошла ошибка при обновлении токена. 
         Попробуйте сделать запрос позже. Status: ${res.status}`);
     }
-
     return res.json();
   }
 
   async addNewSurvey(values, token) {
     this.checkToken(token);
 
-    const res = await fetch(`${this.baseUrl}/surveys}`, {
+    const res = await fetch(`${this.baseUrl}/surveys`, {
       method: 'POST',
       headers: {
         authorization: this.getAuthorizationHeader(token),
@@ -203,7 +202,7 @@ class TeamProjectApi {
   async takeSurveyById(surveyId, values, token) {
     this.checkToken(token);
 
-    const res = await fetch(`${this.baseUrl}/surveys/${surveyId}}`, {
+    const res = await fetch(`${this.baseUrl}/surveys/${surveyId}`, {
       method: 'PUT',
       headers: {
         authorization: this.getAuthorizationHeader(token),
@@ -284,4 +283,6 @@ class TeamProjectApi {
   }
 }
 
-export const teamProjectApi = new TeamProjectApi({ baseUrl: 'http://localhost:3005/api/v1' });
+export const teamProjectApi = new TeamProjectApi({
+  baseUrl: 'http://localhost:3005/api/v1',
+});
