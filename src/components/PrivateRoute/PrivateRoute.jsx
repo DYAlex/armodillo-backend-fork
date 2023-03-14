@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { useMutation } from '@tanstack/react-query';
 import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
@@ -5,35 +6,50 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { teamProjectApi } from '../../api/TeamProjectApi';
 import {
-  getAccessTokenSelector, getRefreshTokenSelector, refreshTokens, signOut,
+  getAccessTokenSelector, getRefreshTokenSelector, getUserSelector, refreshTokens, signOut,
 } from '../../redux/slices/userSlice';
 
 export const PrivateRoute = ({ children }) => {
-  console.log('>>>>>>>>>>>>>>>>>>>>>> PrivateRoute <<<<<<<<<<<<<<<<<<<<<');
+  // console.log('>>>>>>>>>>>>>>>>>>>>>> PrivateRoute <<<<<<<<<<<<<<<<<<<<<');
 
   const accessToken = useSelector(getAccessTokenSelector);
   const refreshToken = useSelector(getRefreshTokenSelector);
-
+  const { id: userId } = useSelector(getUserSelector);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const {
-    mutateAsync: refreshTokensMutation,
+    mutateAsync,
     isError,
     error,
+    isLoading,
+    reset,
   } = useMutation({
-    mutationFn: (values) => teamProjectApi.refreshToken(values).then(),
+    mutationFn: (values) => {
+      const { token } = values;
+      const mutationValues = {
+        userId: values.userId,
+        userToken: values.refreshToken,
+      };
+      return teamProjectApi.refreshToken(mutationValues, token).then();
+    },
   });
+
   if (isError) {
     console.log('Произошла ошибка при обновлении токенов', error);
   }
-
-  const { pathname } = useLocation();
-
-  const navigate = useNavigate();
+  if (isLoading) {
+    // console.log('teamProjectApi.refreshToken isLoading');
+  }
 
   useEffect(() => {
-    let timoutId;
-    let request;
+    let timeoutId;
+    const mutationValues = {
+      userId,
+      refreshToken,
+      token: accessToken,
+    };
 
     const noAuth = () => {
       dispatch(signOut());
@@ -57,10 +73,12 @@ export const PrivateRoute = ({ children }) => {
         if (expAccess > now && expRefresh > now) {
           // console.log('start after:', expAccess - now);
 
-          timoutId = window.setTimeout(async () => {
-            request = refreshTokensMutation(refreshToken);
-            const { data } = await request;
-            if (data) return dispatch(refreshTokens(data));
+          timeoutId = window.setTimeout(async () => {
+            const data = await mutateAsync(mutationValues);
+            // console.log({ data, now });
+            if (data) {
+              return dispatch(refreshTokens(data));
+            }
             return noAuth();
           }, Math.max(expAccess - now, 0));
 
@@ -68,28 +86,26 @@ export const PrivateRoute = ({ children }) => {
         }
 
         if (expAccess < now && expRefresh > now) {
-          if (timoutId) window.clearTimeout(timoutId);
-
-          request = refreshTokensMutation(refreshToken);
-          const { data } = await request;
-          // eslint-disable-next-line consistent-return
-          if (data) return dispatch(refreshTokens(data));
-          // eslint-disable-next-line consistent-return
+          if (timeoutId) window.clearTimeout(timeoutId);
+          const data = await mutateAsync(mutationValues);
+          // console.log({ data });
+          if (data) {
+            return dispatch(refreshTokens(data));
+          }
           return noAuth();
         }
       }
-      // eslint-disable-next-line consistent-return
       return noAuth();
     };
 
     func();
 
     return () => {
-      if (timoutId !== undefined) {
-        window.clearTimeout(timoutId);
+      if (timeoutId !== undefined) {
+        window.clearTimeout(timeoutId);
       }
 
-      if (request !== undefined) request.abort();
+      if (isLoading) reset();
     };
   }, [
     accessToken,
@@ -97,7 +113,7 @@ export const PrivateRoute = ({ children }) => {
     navigate,
     pathname,
     refreshToken,
-    refreshTokensMutation,
+    mutateAsync,
   ]);
 
   return children;
