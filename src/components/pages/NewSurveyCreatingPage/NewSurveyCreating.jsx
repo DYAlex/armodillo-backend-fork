@@ -7,6 +7,9 @@ import { useMutation } from '@tanstack/react-query';
 import { validationScheme } from '../../../utils/validators';
 import styles from './newSurveyCreating.module.css';
 import { teamProjectApi } from '../../../api/TeamProjectApi';
+import { ButtonWhite } from '../../atoms/ButtonWhite/ButtonWhite';
+import { ButtonPurple } from '../../atoms/ButtonPurple/ButtonPurple';
+import { MainWrap } from '../../templates/MainWrap/MainWrap';
 
 export function NewSurveyCreating() {
   // eslint-disable-next-line max-len
@@ -58,7 +61,6 @@ export function NewSurveyCreating() {
     formData.getAll('files');
     const res = await mutateAsyncUpload(formData);
     setSelectedFile('');
-    console.log(res);
     if (res !== 'Не выбран файл для загрузки, либо его тип не соответствует типу изображения') {
       getUploadedUrl(res, index);
     }
@@ -121,154 +123,155 @@ export function NewSurveyCreating() {
     );
   }
   return (
-    <div className={styles.newSurveyCreatingPage}>
-      <h1 className={styles.pageTitle}>Создание нового опроса</h1>
-      <Formik
-        initialValues={{
-          surveyTitle: '',
-          surveyType: '',
-          options: [optionsGroup],
-          allowExtraOption: false,
-        }}
-        validationSchema={validationScheme}
-        onSubmit={async (values) => {
-          valuesPrepareHandler(values);
-        }}
-      >
-        {({ values }) => (
-          <Form className={styles.formWrapper}>
-            <Field
-              className={styles.surveyTitle}
-              type="text"
-              name="surveyTitle"
-              placeholder="заголовок опроса"
-            />
-            <ErrorMessage
-              className={styles.errorMessage}
-              name="surveyTitle"
-              component="div"
-            />
-            <div id="surveyTypeGroup">
-              <h4>Тип опроса</h4>
-            </div>
-            <div
-              role="group"
-              aria-labelledby="my-radio-group"
-              className={styles.typeWrapper}
-            >
+    <MainWrap>
+      <div className={styles.page}>
+        <h1 className={styles.pageTitle}>Создание нового опроса</h1>
+        <Formik
+          initialValues={{
+            surveyTitle: '',
+            surveyType: '',
+            options: [optionsGroup],
+            allowExtraOption: false,
+          }}
+          validationSchema={validationScheme}
+          onSubmit={async (values) => {
+            valuesPrepareHandler(values);
+          }}
+        >
+          {({ values }) => (
+            <Form className={styles.formWrapper}>
               <Field
-                type="radio"
-                name="surveyType"
-                value="SC"
-                id="SC"
+                className={styles.surveyTitle}
+                type="text"
+                name="surveyTitle"
+                placeholder="заголовок опроса"
               />
-              <label
-                htmlFor="SC"
-                className={styles.typeCard}
-              >
-                <div className={styles.typeTitle}>Единственный выбор</div>
-                <div className={styles.typeDescription}>
-                  Выбор большинством голосов, где каждый участник может
-                  проголосовать только за один вариант ответа
-                </div>
-              </label>
-              <Field
-                type="radio"
-                name="surveyType"
-                value="MC"
-                id="MC"
+              <ErrorMessage
+                className={styles.errorMessage}
+                name="surveyTitle"
+                component="div"
               />
-              <label
-                htmlFor="MC"
-                className={styles.typeCard}
+              <div id="surveyTypeGroup">
+                <h4>Тип опроса</h4>
+              </div>
+              <div
+                role="group"
+                aria-labelledby="my-radio-group"
+                className={styles.typeWrapper}
               >
-                <div className={styles.typeTitle}>Множественный выбор</div>
-                <div className={styles.typeDescription}>
-                  Выбор большинством голосов, где каждый участник может
-                  проголосовать за несколько вариантов ответа
-                </div>
-              </label>
-              <Field
-                type="radio"
+                <Field
+                  type="radio"
+                  name="surveyType"
+                  value="SC"
+                  id="SC"
+                />
+                <label
+                  htmlFor="SC"
+                  className={styles.typeCard}
+                >
+                  <div className={styles.typeTitle}>Единственный выбор</div>
+                  <div className={styles.typeDescription}>
+                    Выбор большинством голосов, где каждый участник может
+                    проголосовать только за один вариант ответа
+                  </div>
+                </label>
+                <Field
+                  type="radio"
+                  name="surveyType"
+                  value="MC"
+                  id="MC"
+                />
+                <label
+                  htmlFor="MC"
+                  className={styles.typeCard}
+                >
+                  <div className={styles.typeTitle}>Множественный выбор</div>
+                  <div className={styles.typeDescription}>
+                    Выбор большинством голосов, где каждый участник может
+                    проголосовать за несколько вариантов ответа
+                  </div>
+                </label>
+                <Field
+                  type="radio"
+                  name="surveyType"
+                  value="UC"
+                  id="UC"
+                />
+                <label
+                  htmlFor="UC"
+                  className={styles.typeCard}
+                >
+                  <div className={styles.typeTitle}>Уникальный выбор</div>
+                  <div className={styles.typeDescription}>
+                    Каждый из вариантов ответов может быть выбран не более, чем
+                    одним участником
+                  </div>
+                </label>
+              </div>
+              <ErrorMessage
+                className={styles.errorMessage}
                 name="surveyType"
-                value="UC"
-                id="UC"
+                component="div"
               />
-              <label
-                htmlFor="UC"
-                className={styles.typeCard}
-              >
-                <div className={styles.typeTitle}>Уникальный выбор</div>
-                <div className={styles.typeDescription}>
-                  Каждый из вариантов ответов может быть выбран не более, чем
-                  одним участником
-                </div>
-              </label>
-            </div>
-            <ErrorMessage
-              className={styles.errorMessage}
-              name="surveyType"
-              component="div"
-            />
-            <h4>Варианты ответов:</h4>
-            <FieldArray name="options">
-              {({ push, remove }) => (
-                <div className={styles.optionWrapper}>
-                  {values.options.map((_, index) => (
-                    <div
-                      className={styles.option}
-                      key={index}
-                    >
-                      <div className={styles.optionInputWrapper}>
-                        <Field
-                          type="text"
-                          name={`options.${index}.optionTitle`}
-                          placeholder="вариант ответа"
-                        />
-                        <ErrorMessage
-                          className={styles.errorMessage}
-                          name={`options.${index}.optionTitle`}
-                          component="div"
-                        />
-                        <Field
-                          type="text"
-                          name={`options.${index}.activeLink`}
-                          placeholder="ссылка для просмотра"
-                        />
-                        <ErrorMessage
-                          className={styles.errorMessage}
-                          name={`options.${index}.activeLink`}
-                          component="div"
-                        />
-                        <input
-                          type="text"
-                          placeholder="ссылка на изображение"
-                          onChange={(event) => changeImageLinkHandler(event, index)}
-                          value={imageLinkValues[index] || ''}
-                        />
-                        <ErrorMessage
-                          className={styles.errorMessage}
-                          name={`options.${index}.linkurl`}
-                          component="div"
-                        />
-                        <input
-                          className={styles.hidden}
-                          encType="multipart/form-data"
-                          type="file"
-                          ref={filePicker}
-                          onChange={handleChange}
-                        />
-                        {selectedFile !== '' && (
-                          <button
+              <h4>Варианты ответов:</h4>
+              <FieldArray name="options">
+                {({ push, remove }) => (
+                  <div className={styles.optionWrapper}>
+                    {values.options.map((_, index) => (
+                      <div
+                        className={styles.option}
+                        key={index}
+                      >
+                        <div className={styles.optionInputWrapper}>
+                          <Field
+                            type="text"
+                            name={`options.${index}.optionTitle`}
+                            placeholder="вариант ответа"
+                          />
+                          <ErrorMessage
+                            className={styles.errorMessage}
+                            name={`options.${index}.optionTitle`}
+                            component="div"
+                          />
+                          <Field
+                            type="text"
+                            name={`options.${index}.activeLink`}
+                            placeholder="ссылка для просмотра"
+                          />
+                          <ErrorMessage
+                            className={styles.errorMessage}
+                            name={`options.${index}.activeLink`}
+                            component="div"
+                          />
+                          <input
+                            type="text"
+                            placeholder="ссылка на изображение"
+                            onChange={(event) => changeImageLinkHandler(event, index)}
+                            value={imageLinkValues[index] || ''}
+                          />
+                          <ErrorMessage
+                            className={styles.errorMessage}
+                            name={`options.${index}.linkurl`}
+                            component="div"
+                          />
+                          <input
+                            className={styles.hidden}
+                            encType="multipart/form-data"
+                            type="file"
+                            ref={filePicker}
+                            onChange={handleChange}
+                          />
+                          {selectedFile !== '' && (
+                          <ButtonWhite
                             type="button"
                             onClick={() => uploadHandler(index)}
                           >
                             Загрузить файл
-                          </button>
-                        )}
-                      </div>
-                      <div className={styles.image} onClick={handlePick} title="загрузить файл">
-                        {(imageContent[index]) && (
+                          </ButtonWhite>
+                          )}
+                        </div>
+                        <div className={styles.image} onClick={handlePick} title="загрузить файл">
+                          {(imageContent[index]) && (
                           <button
                             type="button"
                             title="удалить файл"
@@ -277,14 +280,14 @@ export function NewSurveyCreating() {
                           >
                             <i className="fa-solid fa-xmark" />
                           </button>
-                        )}
-                        <img
-                          src={imageContent[index] || ''}
-                          alt="изображение"
-                        />
-                      </div>
-                      {index > 0 && (
-                        <button
+                          )}
+                          <img
+                            src={imageContent[index] || ''}
+                            alt="изображение"
+                          />
+                        </div>
+                        {index > 0 && (
+                        <ButtonWhite
                           type="button"
                           className={styles.buttonDelete}
                           onClick={() => {
@@ -293,39 +296,40 @@ export function NewSurveyCreating() {
                           }}
                         >
                           Удалить
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    className={styles.buttonAddOption}
-                    onClick={() => push(optionsGroup)}
-                  >
-                    Добавить вариант ответа
-                  </button>
-                </div>
-              )}
-            </FieldArray>
-            <div className={styles.allowExtraOption}>
-              <Field
-                type="checkbox"
-                name="allowExtraOption"
-                id="allowExtraOption"
-              />
-              <label htmlFor="allowExtraOption">
-                Разрешить участникам выбор своего варианта
-              </label>
-            </div>
-            <button
-              type="submit"
-              className={styles.buttonSubmit}
-            >
-              Сформировать ссылку на опрос
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
+                        </ButtonWhite>
+                        )}
+                      </div>
+                    ))}
+                    <ButtonWhite
+                      type="button"
+                    // className={styles.buttonAddOption}
+                      onClick={() => push(optionsGroup)}
+                    >
+                      Добавить вариант ответа
+                    </ButtonWhite>
+                  </div>
+                )}
+              </FieldArray>
+              <div className={styles.allowExtraOption}>
+                <Field
+                  type="checkbox"
+                  name="allowExtraOption"
+                  id="allowExtraOption"
+                />
+                <label htmlFor="allowExtraOption">
+                  Разрешить участникам выбор своего варианта
+                </label>
+              </div>
+              <ButtonPurple
+                type="submit"
+                className={styles.buttonSubmit}
+              >
+                Сформировать ссылку на опрос
+              </ButtonPurple>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </MainWrap>
   );
 }

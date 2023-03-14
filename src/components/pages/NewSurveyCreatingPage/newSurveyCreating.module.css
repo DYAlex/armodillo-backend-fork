@@ -1,7 +1,8 @@
-.newSurveyCreatingPage {
-  background-color: #ddd;
-  min-height: calc(100vh - 150px);
-  padding-bottom: 100px;
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
 }
 
 .surveyTitle {
@@ -31,7 +32,7 @@
 .optionWrapper {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   justify-content: center;
   margin: 0 auto 20px;
 }
@@ -72,7 +73,7 @@ input[type='radio'] {
 
 .typeWrapper {
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
 }
 
 .typeCard {
@@ -101,7 +102,6 @@ input[type='radio']:checked + label {
   border: 2px solid green;
 }
 
-button[type='submit'],
 input[type='file'],
 input[type='checkbox'] + label {
   cursor: pointer;
@@ -109,14 +109,6 @@ input[type='checkbox'] + label {
 
 .allowExtraOption {
   margin: 20px 0;
-}
-.buttonSubmit,
-.buttonAddOption {
-  margin: 0 auto;
-}
-
-.buttonDelete {
-  height: fit-content;
 }
 
 .buttonImageDelete {
@@ -129,6 +121,7 @@ input[type='checkbox'] + label {
   height: auto;
   min-height: unset;
   padding: 4px;
+  background-color: white;
 }
 
 .hidden {
@@ -145,4 +138,8 @@ input[type='checkbox'] + label {
   text-align: left;
   font-size: 40px;
   margin: 40px 0 0 40px;
+}
+
+button {
+  width: fit-content;
 }
