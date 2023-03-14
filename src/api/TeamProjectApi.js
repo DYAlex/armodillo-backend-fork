@@ -144,12 +144,12 @@ class TeamProjectApi {
       throw new Error(`Произошла ошибка при обновлении токена. 
         Попробуйте сделать запрос позже. Status: ${res.status}`);
     }
-
     return res.json();
   }
 
   async addNewSurvey(values, token) {
     this.checkToken(token);
+    
     const res = await fetch(`${this.baseUrl}/surveys`, {
       method: 'POST',
       headers: {
