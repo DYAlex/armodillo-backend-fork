@@ -10,7 +10,7 @@ import { surveysFilterRouter } from './routers/surveysFilterRouter.js';
 import { uploadImagesRouter } from './routers/uploadImagesRouter.js';
 import fileUpload from 'express-fileupload'
 
-const PORT = 3005;
+const PORT = 32305;
 
 const app = express();
 app.use(cors());
@@ -19,7 +19,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(fileUpload({
   limits: {
-      fileSize: 10000000, // Ограничение на загрузку примерно 10MB
+    fileSize: 10000000, // Ограничение на загрузку примерно 10MB
   },
   abortOnLimit: true,
 }))
