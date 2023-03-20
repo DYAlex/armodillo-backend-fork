@@ -78,7 +78,14 @@ function takeSurveyById(req, res) {
       const currentSurvey = DB.surveys.find(
         (survey) => survey.surveyId === surveyId
       );
-      if (currentSurvey.done.includes(userID)) {
+      if (
+        currentSurvey.done.includes(userID) ||
+        (typeof currentSurvey.options[0].checked === 'string'
+          ? currentSurvey.options.some((option) => option.checked === userID)
+          : currentSurvey.options.some((option) => {
+              option.checked.includes(userID);
+            }))
+      ) {
         return res.status(409).json('Вы уже проголосовали в этом опросе');
       }
       if (currentSurvey.surveyType === 'UC') {
@@ -115,9 +122,30 @@ function takeSurveyById(req, res) {
     return res.sendStatus(500);
   }
 }
-
+function deleteSurveyFromVisited(req, res) {
+  try {
+    const { body } = req;
+    const token = req.headers.authorization.split(' ')[1];
+    const userID = getUserIdFromToken(token);
+    const surveyId = req.params.surveyId;
+    try {
+      const currentSurvey = DB.surveys.find(
+        (survey) => survey.surveyId === surveyId
+      );
+      currentSurvey.visited = currentSurvey.visited.filter((id) => id !== userID)
+      const newContent = `export const DB = ${JSON.stringify(DB)}`;
+      updateDB(newContent);
+      return res.sendStatus(202);
+    } catch (error) {
+      return res.status(404).json('Опрос не найден');
+    }
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+}
 export const surveysController = {
   addNewSurvey,
   getSurveyById,
   takeSurveyById,
+  deleteSurveyFromVisited
 };
