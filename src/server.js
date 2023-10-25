@@ -26,7 +26,7 @@ app.use(fileUpload({
   abortOnLimit: true,
 }))
 // Это роут для раздачи статического файла из папки public, в котором лежит форма для проверки загрузки файла. Раскомментировать для тестирования.
-// app.use(express.static('public'));
+app.use(express.static('public'));
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1', authRouter);
 app.use('/api/v1/surveys', surveysRouter);
