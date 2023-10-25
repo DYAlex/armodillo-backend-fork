@@ -43,6 +43,9 @@ app.get('/api/v1/secret', checkAuth, (req, res) => {
     return res.sendStatus(500);
   }
 });
+app.listen(PORT, () => {
+  console.log('server is running');
+});
 
 const allowCors = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
